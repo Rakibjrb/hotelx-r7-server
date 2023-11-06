@@ -1,4 +1,9 @@
-const { roomsCollection, client } = require("../DB/db");
+const {
+  roomsCollection,
+  client,
+  testimonialsCollection,
+  ObjectId,
+} = require("../DB/db");
 
 const homeRoute = (req, res) => {
   res.send({
@@ -8,11 +13,9 @@ const homeRoute = (req, res) => {
 };
 
 const getRooms = async (req, res) => {
-  const options = {};
-
   try {
     await client.connect();
-    const result = await roomsCollection.find(options).toArray();
+    const result = await roomsCollection.find({}).toArray();
     res.send(result);
   } catch (error) {
     res.send(error);
@@ -21,4 +24,37 @@ const getRooms = async (req, res) => {
   }
 };
 
-module.exports = { homeRoute, getRooms };
+const getRoomById = async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+
+  try {
+    await client.connect();
+    const result = await roomsCollection.find(query).toArray();
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  } finally {
+    await client.close();
+  }
+};
+
+const getTestimonials = async (req, res) => {
+  const options = {};
+  try {
+    await client.connect();
+    const result = await testimonialsCollection.find(options).toArray();
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  } finally {
+    await client.close();
+  }
+};
+
+module.exports = {
+  homeRoute,
+  getRooms,
+  getTestimonials,
+  getRoomById,
+};

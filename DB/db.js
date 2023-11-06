@@ -11,6 +11,7 @@ const client = new MongoClient(uri, {
 });
 
 const roomsCollection = client.db("hotelX").collection("rooms");
+const testimonialsCollection = client.db("hotelX").collection("testimonials");
 
 const connectdb = () => client.connect();
 const closedb = () => client.close();
@@ -34,4 +35,5 @@ module.exports = {
   connectdb,
   closedb,
   roomsCollection,
+  testimonialsCollection,
 };
