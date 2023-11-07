@@ -10,6 +10,7 @@ const {
   userBookingRooms,
   updateRoomById,
   getBookingRooms,
+  deleteBookings,
 } = require("./controllers/controllers");
 const { run } = require("./DB/db");
 // const cookieParser = require("cookie-parser");
@@ -34,5 +35,8 @@ app.post("/api/v1/booking", userBookingRooms);
 
 //all put or patch routes
 app.patch("/api/v1/get-available-rooms/:id", updateRoomById);
+
+//all delete routes
+app.delete("/api/v1/delete-bookings/:id", deleteBookings);
 
 module.exports = app;

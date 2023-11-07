@@ -132,6 +132,34 @@ const userBookingRooms = async (req, res) => {
   }
 };
 
+const deleteBookings = async (req, res) => {
+  const deleteId = req.params.id;
+  const query = { _id: new ObjectId(deleteId) };
+  try {
+    await client.connect();
+    const deleteBooking = await bookingRoomsCollection.findOne(query);
+    const doc = {
+      $set: {
+        availability: "Available",
+      },
+    };
+    const room = await roomsCollection.updateOne(
+      {
+        _id: new ObjectId(deleteBooking.roomId),
+      },
+      doc
+    );
+
+    const deleted = await bookingRoomsCollection.deleteOne(query);
+
+    res.send({ updated: deleted });
+  } catch (error) {
+    res.send(error);
+  } finally {
+    await client.close();
+  }
+};
+
 module.exports = {
   homeRoute,
   getFeaturedRooms,
@@ -141,4 +169,5 @@ module.exports = {
   userBookingRooms,
   updateRoomById,
   getBookingRooms,
+  deleteBookings,
 };
