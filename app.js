@@ -11,6 +11,8 @@ const {
   updateRoomById,
   getBookingRooms,
   deleteBookings,
+  updateBookingDate,
+  handlePostTestimonials,
 } = require("./controllers/controllers");
 const { run } = require("./DB/db");
 // const cookieParser = require("cookie-parser");
@@ -32,9 +34,11 @@ app.get("/api/v1/get-booking-rooms", getBookingRooms);
 
 //all post routes
 app.post("/api/v1/booking", userBookingRooms);
+app.post("/api/v1/postTestimonials", handlePostTestimonials);
 
 //all put or patch routes
 app.patch("/api/v1/get-available-rooms/:id", updateRoomById);
+app.patch("/api/v1/update-booking-date/:id", updateBookingDate);
 
 //all delete routes
 app.delete("/api/v1/delete-bookings/:id", deleteBookings);
