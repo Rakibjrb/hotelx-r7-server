@@ -3,7 +3,6 @@ const {
   client,
   testimonialsCollection,
   ObjectId,
-  featuredRoomsCollection,
   bookingRoomsCollection,
 } = require("../DB/db");
 
@@ -17,7 +16,9 @@ const homeRoute = (req, res) => {
 const getFeaturedRooms = async (req, res) => {
   try {
     await client.connect();
-    const result = await featuredRoomsCollection.find({}).toArray();
+    const result = await roomsCollection
+      .find({ featured: { $eq: true } })
+      .toArray();
     res.send(result);
   } catch (error) {
     res.send(error);
@@ -56,9 +57,12 @@ const getRoomById = async (req, res) => {
 };
 
 const getBookingRooms = async (req, res) => {
+  const query = req.query;
   try {
     await client.connect();
-    const result = await bookingRoomsCollection.find({}).toArray();
+    const result = await bookingRoomsCollection
+      .find({ user: query.email })
+      .toArray();
     res.send(result);
   } catch (error) {
     res.send(error);
@@ -78,7 +82,7 @@ const updateRoomById = async (req, res) => {
   };
   try {
     await client.connect();
-    const result = await featuredRoomsCollection.updateOne(query, newInfo);
+    const result = await roomsCollection.updateOne(query, newInfo);
     res.send(result);
   } catch (error) {
     res.send(error);
