@@ -28,16 +28,31 @@ const getFeaturedRooms = async (req, res) => {
 };
 
 const getAvailableRooms = async (req, res) => {
-  try {
-    await client.connect();
-    const result = await roomsCollection
-      .find({ availability: { $eq: "Available" } })
-      .toArray();
-    res.send(result);
-  } catch (error) {
-    res.send(error);
-  } finally {
-    await client.close();
+  const value = req.query;
+
+  if (value.price === "2") {
+    try {
+      await client.connect();
+      const result = await roomsCollection
+        .find({ availability: { $eq: "Available" } })
+        .toArray();
+    } catch (error) {
+      res.send(error);
+    } finally {
+      await client.close();
+    }
+  } else {
+    try {
+      await client.connect();
+      const result = await roomsCollection
+        .find({ availability: { $eq: "Available" } })
+        .toArray();
+      res.send(result);
+    } catch (error) {
+      res.send(error);
+    } finally {
+      await client.close();
+    }
   }
 };
 
