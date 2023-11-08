@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://hotelx-r7.web.app"],
+    origin: ["https://hotelx-r7.web.app", "https://hotelx-r7.firebaseapp.com"],
     credentials: true,
   })
 );
