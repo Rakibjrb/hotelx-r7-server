@@ -108,14 +108,20 @@ const updateRoomById = async (req, res) => {
 
 const updateBookingDate = async (req, res) => {
   const id = req.params.id;
-  // const query = {_id: new ObjectId(id)};
+  const query = { _id: new ObjectId(id) };
   const updateDate = req.body;
-  console.log({
-    id,
-    updateDate,
-  });
-
-  res.send({ success: true });
+  const doc = {
+    $set: { bookingDate: updateDate.updatedDate },
+  };
+  try {
+    await client.connect();
+    const result = await bookingRoomsCollection.updateOne(query, doc);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  } finally {
+    await client.close();
+  }
 };
 
 const getTestimonials = async (req, res) => {
