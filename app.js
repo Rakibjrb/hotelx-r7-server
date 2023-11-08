@@ -13,13 +13,20 @@ const {
   deleteBookings,
   updateBookingDate,
   handlePostTestimonials,
+  setSookieToken,
 } = require("./controllers/controllers");
 const { run } = require("./DB/db");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 
 //npm middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 
 //db connection test
 run();
@@ -35,6 +42,7 @@ app.get("/api/v1/get-booking-rooms", getBookingRooms);
 //all post routes
 app.post("/api/v1/booking", userBookingRooms);
 app.post("/api/v1/postTestimonials", handlePostTestimonials);
+app.post("/api/v1/create-token", setSookieToken);
 
 //all put or patch routes
 app.patch("/api/v1/get-available-rooms/:id", updateRoomById);

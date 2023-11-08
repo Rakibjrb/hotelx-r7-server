@@ -5,6 +5,8 @@ const {
   ObjectId,
   bookingRoomsCollection,
 } = require("../DB/db");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const homeRoute = (req, res) => {
   res.send({
@@ -191,6 +193,18 @@ const handlePostTestimonials = async (req, res) => {
   }
 };
 
+const setSookieToken = (req, res) => {
+  const info = req.body;
+  const token = jwt.sign(info, process.env.TOKEN_SECRETE, { expiresIn: "1h" });
+  res
+    .cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    })
+    .send({ success: true });
+};
+
 module.exports = {
   homeRoute,
   getFeaturedRooms,
@@ -203,4 +217,5 @@ module.exports = {
   deleteBookings,
   updateBookingDate,
   handlePostTestimonials,
+  setSookieToken,
 };
