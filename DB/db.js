@@ -14,18 +14,15 @@ const roomsCollection = client.db("hotelX").collection("rooms");
 const testimonialsCollection = client.db("hotelX").collection("testimonials");
 const bookingRoomsCollection = client.db("hotelX").collection("bookingRooms");
 
-const connectdb = () => client.connect();
-const closedb = () => client.close();
-
 const run = async () => {
   try {
-    connectdb();
+    client.connect();
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    closedb();
+    //
   }
 };
 
@@ -33,8 +30,6 @@ module.exports = {
   run,
   client,
   ObjectId,
-  connectdb,
-  closedb,
   roomsCollection,
   testimonialsCollection,
   bookingRoomsCollection,
